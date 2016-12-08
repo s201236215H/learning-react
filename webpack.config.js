@@ -1,23 +1,31 @@
 var webpack = require('webpack');
 var path  = require('path');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
-
+var HtmlWebpackPlugin = require('html-webpack-plugin');
 
  module.exports = {
-		entry: [/*'webpack/hot/dev-server',*/ path.resolve(__dirname, 'src/js/main.js')],
+		// entry: [/*'webpack/hot/dev-server',*/ path.resolve(__dirname, 'src/js/main.js')],
+		entry: {main: ['./src/js/main','./src/css/main']},
 		output: {
-			path: path.resolve(__dirname, 'dist/js'),
-			filename: 'bundle.js'
+			path: path.resolve(__dirname, 'dist'),
+			// filename: 'bundle.js'
+			filename:'js/[name].js',
+			chunkFilename: 'js/[id].js'
 		},
 		module: {
 		  loaders: [
 		  // Extract css files
          {
                 test: /\.css$/,
-                loader: 'style-loader!css-loader',
+                // loader: 'style-loader!css-loader',
+                loader: ExtractTextPlugin.extract('style','css?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]')
          },
+         // {
+         //        test: /\.scss/,
+         //        loader: ExtractTextPlugin.extract('style-loader', 'css!sass?indentedSyntax=true&sourceMap=true')
+         // },
 		    { 
-		    	test: /\.js$/,
+		    	test: /(\.js(x)?)$/,
 		    	     exclude: /(node_modules|bower_components)/,
 		    	     loader: 'babel-loader',
 		    	     query: {
@@ -43,7 +51,7 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 		plugins:[
 		  new webpack.DefinePlugin({
 		    'process.env':{
-		      'NODE_ENV': JSON.stringify('production')
+		      'NODE_ENV': JSON.stringify('development')
 		    }
 		  }),
 		  new webpack.optimize.UglifyJsPlugin({
@@ -51,7 +59,11 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 		      warnings: true
 		    }
 		  }),
-		  new ExtractTextPlugin('style.css')
+		  new ExtractTextPlugin('css/[name].css', {allChunks: true}),
+		  new HtmlWebpackPlugin({
+		  	title: 'My App',
+		  	filename: '../index.html'
+		  })
 		]
 	}
 

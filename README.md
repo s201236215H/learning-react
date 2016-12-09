@@ -1,7 +1,7 @@
 # Learning-React
 
 ##Usage
-run `npm run dev` to start the server  
+run `npm run dev` to start the dev server  
 run `npm run build` to compile assets  
 
 ## Achived

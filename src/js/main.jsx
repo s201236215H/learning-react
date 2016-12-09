@@ -9,10 +9,20 @@ import '../css/main';
 
 
 
-ReactDOM.render(
-  <div id='root'><h1>Hello, world!</h1></div>,
-  document.getElementById("box")
-);
+
+
+setInterval( function() {
+	const ele = (
+			<div>
+				<h1>Hello, world</h1>
+				<h2>It is {new Date().toLocaleString()}.</h2>
+			</div>
+		);
+	ReactDOM.render(
+			ele,
+			document.getElementById('root')
+		);
+}, 1000)
 
 
 

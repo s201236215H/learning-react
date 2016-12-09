@@ -4,13 +4,17 @@
 run `npm run dev` to start the server  
 run `npm run build` to compile assets  
 
-## Current Stage
+## Achived
 1. Inject css to the page but not support HMR  
 2. Compile js file to a bundle  
-3. HMR in css and js (or html)
+3. HMR in css and js (or html)  
+4. Complie SASS  
 
+## Ongoing
+1. Use es6 in webpack config  
+2. create complex react components  
 
 ## Up Next
-1. compile SASS  
-2. Use es6 in webpack config  
-3. create complex react components
+1. Apply things on php/nodejs framework  
+2. More documentation  
+

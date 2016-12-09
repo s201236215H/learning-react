@@ -4,8 +4,8 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 
  module.exports = {
-		// entry: [/*'webpack/hot/dev-server',*/ path.resolve(__dirname, 'src/js/main.js')],
-		entry: {main: ['./src/js/main','./src/css/main'], dev_server: ['webpack/hot/dev-server']},
+		entry: {main: ['./src/js/main'], dev_server: ['webpack/hot/dev-server']},
+		devtool: ['source-map'],
 		output: {
 			path: path.resolve(__dirname, 'dist'),
 			// filename: 'bundle.js'
@@ -20,10 +20,12 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
                 // loader: 'style-loader!css-loader',
                 loader: ExtractTextPlugin.extract('style','css?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]')
          },
-         // {
-         //        test: /\.scss/,
-         //        loader: ExtractTextPlugin.extract('style-loader', 'css!sass?indentedSyntax=true&sourceMap=true')
-         // },
+         {
+                test: /\.scss$/,
+                // loader: ExtractTextPlugin.extract('style', 'css?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!autoprefixer!sass?indentedSyntax=false&sourceMap=true')
+                loader: ExtractTextPlugin.extract('style', 'css?sourceMap!sass?outputStyle=expanded&sourceMap=Map&sourceMapContents=true')
+
+         },
 		    { 
 		    	test: /(\.js(x)?)$/,
 		    	     exclude: /(node_modules|bower_components)/,
@@ -43,7 +45,7 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 		  ]
 		},
 		resolve: {
-			extensions: ['', '.js', '.json', '.jsx', '.css'],
+			extensions: ['', '.js', '.json', '.jsx', '.css', '.scss'],
 			modulesDirectories: [
 			          'node_modules'
 			] 
@@ -51,12 +53,12 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 		plugins:[
 		  new webpack.DefinePlugin({
 		    'process.env':{
-		      'NODE_ENV': JSON.stringify('development')
+		      'NODE_ENV': JSON.stringify('Development')
 		    }
 		  }),
 		  new webpack.optimize.UglifyJsPlugin({
 		    compress:{
-		      warnings: true
+		      warnings: false
 		    }
 		  }),
 		  new ExtractTextPlugin('css/[name].css', {allChunks: true}),

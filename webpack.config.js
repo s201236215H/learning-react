@@ -4,7 +4,8 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 
  module.exports = {
-		entry: {main: ['./src/js/main'], dev_server: ['webpack/hot/dev-server']},
+		// entry: {main: ['./src/js/main'], dev_server: ['webpack/hot/dev-server']},
+		entry: {main: ['./src/js/main']},
 		devtool: ['source-map'],
 		output: {
 			path: path.resolve(__dirname, 'dist'),
@@ -64,7 +65,8 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 		  new ExtractTextPlugin('css/[name].css', {allChunks: true}),
 		  new HtmlWebpackPlugin({
 		  	title: 'My App',
-		  	filename: '../index.html'
+		  	// filename: 'index.html',
+		  	template: '!!pug!src/index.pug'
 		  })
 		]
 	}

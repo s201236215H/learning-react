@@ -11,7 +11,7 @@ import '../css/main';
 
 ReactDOM.render(
   <div id='root'><h1>Hello, world!</h1></div>,
-  document.body
+  document.getElementById("box")
 );
 
 

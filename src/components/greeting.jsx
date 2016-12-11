@@ -13,13 +13,14 @@ export class Greeting extends React.Component {
 	constructor(props) {
 		super(props);
 		const isLoggedIn = props.isLoggedIn;
-
+		console.log(isLoggedIn);
 	}
 
 
 
 	render() {
-		if(this.isLoggedIn) {
+		console.log(this.props.isLoggedIn)
+		if(this.props.isLoggedIn) {
 			return <UserGreeting></UserGreeting>;
 		} else {
 			return <GuestGreeting></GuestGreeting>;

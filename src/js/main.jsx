@@ -3,26 +3,62 @@ import ReactDOM from 'react-dom';
 
 import '../css/main';
 
-// var React = require('react');
-// var ReactDOM = require('react-dom');
-// require('../css/all.css');
+import Greeting from '../components/greeting.jsx';
 
 
+class LoginControl extends React.Component {
+	constructor(props) {
+		super(props);
+		this.handleLoginClick = this.handleLoginClick.bind(this);
+		this.handleLogoutClick = this.handleLogoutClick.bind(this);
+		this.state = {isLoggedIn: false};
+	}
 
+	handleLoginClick() {
+		this.setState({isLoggedIn: true});
+	}
 
+	handleLogoutClick() {
+		this,setState({isLoggedIn: false});
+	}
 
-setInterval( function() {
-	const ele = (
+	render() {
+		const isLoggedIn = this.state.isLoggedIn;
+
+		let button = null;
+		if(this.state.isLoggedIn) {
+			button = <LogoutButton onClick={this.handleLogoutClick}></LogoutButton>
+		} else {
+			button = <LoginButton onClick={this.handleLoginClick}></LoginButton>
+		}
+
+		return (
 			<div>
-				<h1>Hello, world</h1>
-				<h2>It is {new Date().toLocaleString()}.</h2>
+				<Greeting isLoggedIn={isLoggedIn}></Greeting>
+				{button}
 			</div>
-		);
-	ReactDOM.render(
-			ele,
-			document.getElementById('root')
-		);
-}, 1000)
+			)
+	}
+}
 
+function LoginButton(props) {
+  return (
+    <button onClick={props.onClick}>
+      Login
+    </button>
+  );
+}
 
+function LogoutButton(props) {
+  return (
+    <button onClick={props.onClick}>
+      Logout
+    </button>
+  );
+}
+
+ReactDOM.render(
+	<LoginControl></LoginControl>,
+	document.getElementById('root')
+);
 

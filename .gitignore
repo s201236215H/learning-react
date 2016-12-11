@@ -38,3 +38,5 @@ jspm_packages
 
 # asset
 src/images/product
+*.css.map
+*.js.map

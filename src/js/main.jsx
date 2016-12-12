@@ -5,26 +5,18 @@ import '../css/main';
 
 import Greeting from '../components/greeting.jsx';
 
-
-class LoginControl extends React.Component {
-	constructor(props) {
-		super(props);
-		this.handleLoginClick = this.handleLoginClick.bind(this);
-		this.handleLogoutClick = this.handleLogoutClick.bind(this);
-		this.state = {isLoggedIn: false};
-	}
-
-	handleLoginClick() {
+const LoginControl = React.createClass({
+	getInitialState: function() {
+		return {isLoggedIn: false}
+	},
+	handleLoginClick: function() {
 		this.setState({isLoggedIn: true});
-	}
-
-	handleLogoutClick() {
+	},
+	handleLogoutClick: function() {
 		this.setState({isLoggedIn: false});
-	}
-
-	render() {
+	},
+	render: function() {
 		const isLoggedIn = this.state.isLoggedIn;
-
 		let button = null;
 		if(isLoggedIn) {
 			button = <LogoutButton onClick={this.handleLogoutClick}></LogoutButton>
@@ -39,7 +31,8 @@ class LoginControl extends React.Component {
 			</div>
 			)
 	}
-}
+})
+
 
 function LoginButton(props) {
   return (

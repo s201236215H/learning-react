@@ -33,6 +33,6 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --config webpack.config.js --watch",
-    "dev": "webpack-dev-server --devtool cheap-module-eval-source-map --progress --colors --hot --inline --content-base dist/"
+    "dev": "webpack-dev-server"
   }
 }

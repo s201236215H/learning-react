@@ -13,7 +13,7 @@ const GiftCatFilter = React.createClass({
   render() {
     const giftCatList = ['all', 'easybreezy', 'sweetheart', 'wildsexy', 'urbansporty', 'coolstylish'];
     const CatBar = giftCatList.map((catName) => {
-      return <div onClick={() => this.handleClick} className="inline-block" key={catName}>{catName}</div>;
+      return <div onClick={() => this.handleClick} key={catName}>{catName}</div>;
     });
     return (<div className="gift-cat-bar">
 					{CatBar}
@@ -59,10 +59,17 @@ const ImgGrid = React.createClass({
 		</div>)
   }
 })
+
+const catDir = (catName) => {
+	return catName.replace("&", "").replace(/\s/g, "");
+};
+
+
 const ProductBox = React.createClass({
   render() {
-  	console.log(this.props.item);
-    return (<img src={"images/products/thumb/"+this.props.item.retouchedName} alt=""/>)
+    return (<img src={['images', 'products', 'thumb', catDir(this.props.item.categories), this.props.item.retouchedName].join("/")
+} alt=""/>)
   }
 })
+
 ReactDOM.render(<GiftSection></GiftSection>, document.getElementById('root'));

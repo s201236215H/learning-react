@@ -78,7 +78,8 @@ module.exports = {
 		  new webpack.optimize.UglifyJsPlugin({
       compress: {
         warnings: false
-      }
+      },
+      sourceMap: false
     }),
 		  new ExtractTextPlugin('css/[name].css', { allChunks: true }),
       new webpack.HotModuleReplacementPlugin(),

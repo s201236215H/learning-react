@@ -79,7 +79,7 @@ module.exports = {
       compress: {
         warnings: false
       },
-      sourceMap: false
+      // sourceMap: false
     }),
 		  new ExtractTextPlugin('css/[name].css', { allChunks: true }),
       new webpack.HotModuleReplacementPlugin(),

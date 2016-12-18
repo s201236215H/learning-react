@@ -4,38 +4,49 @@ var path = require('path');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 
-var PRODUCTION_PATH = 'dist';
+var PRODUCTION_PATH = '/dist';
 var SRC_PATH  = 'src';
 var BUILD_PATH = 'build';
 var ENV = 'development'; // Or 'porduction'
+var devURL = 'http://localhost:9999/';
 
 var jsxLoader = (ENV === 'development') ? 'react-hot!babel' : 'babel';
 
+function getEntrySources(sources) {
+  if(ENV === 'development') {
+    sources.push('webpack-dev-server/client?' + devURL);
+    sources.push('webpack/hot/only-dev-server');
+  }
+
+  return sources;
+}
+
 var configuration = {
-  entry: { main: [path.resolve(__dirname, SRC_PATH + '/js/main')],
+  entry: { main: getEntrySources(['./src/js/main']),
       vendor: [
          'react',
          'react-dom'
       ]
    },
-  devtool: ['cheap-source-map'],
+  // devtool: ['cheap-source-map'],
   output: {
-    path: PRODUCTION_PATH,
-    filename: 'js/[name].js',
-    chunkFilename: 'js/[id].js'
+    publicPath: devURL,
+    // path: PRODUCTION_PATH,
+    filename: 'dist/js/[name].js',
+    // chunkFilename: 'js/[id].js'
   },
   module: {
     loaders: [
 		  // Extract css files
-      {
-        test: /\.css$/,
-        // loader: 'style-loader!css-loader',
-        loader: ExtractTextPlugin.extract('style', 'css?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]')
-         },
+      // {
+      //   test: /\.css$/,
+      //   // loader: 'style-loader!css-loader',
+      //   loader: ExtractTextPlugin.extract('style', 'css?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]')
+      //    },
       {
         test: /\.scss$/,
-        // loader: ExtractTextPlugin.extract('style', 'css?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!autoprefixer!sass?indentedSyntax=false&sourceMap=true')
-        loader: ExtractTextPlugin.extract('style', 'css?sourceMap!sass?sourceMap&sourceMapContents')
+        loaders: ['style', 'css?sourceMap', 'sass?sourceMap&sourceMapContents&outputStyle=expanded']
+        // loader: ExtractTextPlugin.extract('style', 'css?sourceMap!sass?sourceMap&sourceMapContents')
          },
       {
         test: /(\.js(x)?)$/,
@@ -57,12 +68,12 @@ var configuration = {
   },
   devServer: {
   	port: 9999,
-  	compression: true,
-  	devtool: '#cheap-module-source-map',
+  	// compression: true,
+  	devtool: '#cheap-module-eval-source-map',
     progress: true,
-    color: true,
+    colors: true,
     hot: true,
-    contentBase: './dist',
+    // contentBase: './dist',
     'proxy': {
       '/api/products': {
         target: 'https://campaigns.she.com/xmas2016/',
@@ -77,37 +88,31 @@ var configuration = {
 			          'node_modules'
 			]
   },
-  plugins: [
-      new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.bundle.js'),
-		  new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: JSON.stringify(ENV)
-      }
-    }),
-		  new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        warnings: false
-      },
-      // sourceMap: false
-    }),
-		  new ExtractTextPlugin('css/[name].css', { allChunks: false }),
-      new webpack.SourceMapDevToolPlugin({
-        filename: '[file].map',
-        exclude: ['vendor.js', 'vendor.bundle.js']
-      }),
-		  new HtmlWebpackPlugin({
-      title: 'My App',
-      template: '!!pug!src/index.pug'
-    })
-		]
+  // plugins: [
+  //     // new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.bundle.js'),
+	// 	  new webpack.DefinePlugin({
+  //     'process.env': {
+  //       NODE_ENV: JSON.stringify(ENV)
+  //     }
+  //   }),
+	// 	  new webpack.optimize.UglifyJsPlugin({
+  //     compress: {
+  //       warnings: false
+  //     },
+  //     // sourceMap: false
+  //   }),
+	// 	  new ExtractTextPlugin('css/[name].css', { allChunks: false }),
+  //     new webpack.SourceMapDevToolPlugin({
+  //       filename: '[file].map',
+  //       exclude: ['vendor.js', 'vendor.bundle.js']
+  //     }),
+		//   new HtmlWebpackPlugin({
+    //   title: 'My App',
+    //   template: '!!pug!src/index.pug'
+    // })
+		// ]
 };
 
-if (ENV === 'development') {
-    configuration.entry.main.unshift(
-        'webpack/hot/dev-server',
-        'webpack-hot-middleware/client?reload=true'
-    );
-    configuration.plugins.push(new webpack.HotModuleReplacementPlugin());
-}
+
 
 module.exports = configuration;

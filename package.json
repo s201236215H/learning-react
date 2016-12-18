@@ -36,7 +36,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --config webpack.config.js --watch",
-    "dev": "webpack-dev-server --hot --inline",
-    "clear": "rm dist/*hot-update*"
+    "dev": "webpack-dev-server --hot",
+    "clear": "rm -rf dist/js/ dist/css/"
   }
 }

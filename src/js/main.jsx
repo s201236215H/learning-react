@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import LazyLoad from 'react-lazy-load';
 import '../css/main';
+
 
 
 const GiftSection = React.createClass({

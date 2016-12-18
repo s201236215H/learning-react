@@ -40,3 +40,4 @@ jspm_packages
 **/images/products
 *.css.map
 *.js.map
+*bundle*

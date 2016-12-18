@@ -7,10 +7,18 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 var PRODUCTION_PATH = 'dist';
 var SRC_PATH  = 'src';
 var BUILD_PATH = 'build';
+var ENV = 'development'; // Or 'porduction'
 
-module.exports = {
-  entry: { main: [path.resolve(__dirname, SRC_PATH + '/js/main'), 'webpack/hot/dev-server'] },
-  devtool: ['source-map'],
+var jsxLoader = (ENV === 'development') ? 'react-hot!babel' : 'babel';
+
+var configuration = {
+  entry: { main: [path.resolve(__dirname, SRC_PATH + '/js/main')],
+      vendor: [
+         'react',
+         'react-dom'
+      ]
+   },
+  devtool: ['cheap-source-map'],
   output: {
     path: PRODUCTION_PATH,
     filename: 'js/[name].js',
@@ -27,7 +35,7 @@ module.exports = {
       {
         test: /\.scss$/,
         // loader: ExtractTextPlugin.extract('style', 'css?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!autoprefixer!sass?indentedSyntax=false&sourceMap=true')
-        loader: ExtractTextPlugin.extract('style', 'css?sourceMap!sass?outputStyle=expanded&sourceMap=Map&sourceMapContents=true')
+        loader: ExtractTextPlugin.extract('style', 'css?sourceMap!sass?sourceMap&sourceMapContents')
          },
       {
         test: /(\.js(x)?)$/,
@@ -70,9 +78,10 @@ module.exports = {
 			]
   },
   plugins: [
+      new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.bundle.js'),
 		  new webpack.DefinePlugin({
       'process.env': {
-        'NODE_ENV': JSON.stringify('production')
+        NODE_ENV: JSON.stringify(ENV)
       }
     }),
 		  new webpack.optimize.UglifyJsPlugin({
@@ -81,11 +90,24 @@ module.exports = {
       },
       // sourceMap: false
     }),
-		  new ExtractTextPlugin('css/[name].css', { allChunks: true }),
-      new webpack.HotModuleReplacementPlugin(),
+		  new ExtractTextPlugin('css/[name].css', { allChunks: false }),
+      new webpack.SourceMapDevToolPlugin({
+        filename: '[file].map',
+        exclude: ['vendor.js', 'vendor.bundle.js']
+      }),
 		  new HtmlWebpackPlugin({
       title: 'My App',
       template: '!!pug!src/index.pug'
     })
 		]
+};
+
+if (ENV === 'development') {
+    configuration.entry.main.unshift(
+        'webpack/hot/dev-server',
+        'webpack-hot-middleware/client?reload=true'
+    );
+    configuration.plugins.push(new webpack.HotModuleReplacementPlugin());
 }
+
+module.exports = configuration;
